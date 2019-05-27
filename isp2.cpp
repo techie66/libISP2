@@ -130,6 +130,8 @@ uint8_t ISP2::get_packet_length(uint16_t header) {
 uint16_t ISP2::get_next_word(int file) {
 	uint8_t	buf[2] = {0};
 	int result;
+#define NEW
+#ifdef OLD
 	result = read(file,buf,2);
 	if (result == -1) {
 		// Error in read
@@ -149,18 +151,47 @@ uint16_t ISP2::get_next_word(int file) {
 	else {
 		return *(uint16_t*)buf;
 	}
+#elif defined(NEW)
+	// Read from 'file' until bytes match known word type
+	int byte_count = 0;
+	do {
+		buf[0] = buf[1];
+		result = read(file,&buf[1],1);
+		if (result == -1) {
+			// Error in read
+			perror("ISP2 read error");
+			return 0;
+		}
+		else if (result == 0) {
+			// Didn't read anything
+			perror("ISP2 read nothing");
+			return 0;
+		}
+		byte_count++;
+	}
+	while (byte_count < 2 || ISP2::get_word_type(*(uint16_t*)buf) == ISP2_UNK_WORD);
+	
+	// found
+	return *(uint16_t*)buf;
+#endif
 }
 
 word_type ISP2::get_word_type(uint16_t word) {
 	uint16_t temp = word;
 	temp &= ISP2_LC2_HEADER_BITS;
-	if (!(temp^ISP2_LC2_HEADER_SIGNATURE)) {return ISP2_LC2_HEADER_WORD;}
+	if (!(temp^ISP2_LC2_HEADER_SIGNATURE)) {
+		return ISP2_LC2_HEADER_WORD;
+	}
 	temp = word;
 	temp &= ISP2_DATA_BITS;
-	if (!(temp^ISP2_DATA_SIGNATURE)) {return ISP2_DATA_WORD;}
+	if (!(temp^ISP2_DATA_SIGNATURE)) {
+		return ISP2_DATA_WORD;
+	}
 	temp = word;
 	temp &= ISP2_HEADER_BITS;
-	if (!(temp^ISP2_HEADER_SIGNATURE)) {return ISP2_HEADER_WORD;}
+	if (!(temp^ISP2_HEADER_SIGNATURE)) {
+		return ISP2_HEADER_WORD;
+	}
 	return ISP2_UNK_WORD;
 }
 
