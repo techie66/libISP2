@@ -130,6 +130,7 @@ uint8_t ISP2::get_packet_length(uint16_t header) {
 uint16_t ISP2::get_next_word(int file) {
 	uint8_t	buf[2] = {0};
 	int result;
+#ifdef OLD
 	result = read(file,buf,2);
 	if (result == -1) {
 		// Error in read
@@ -149,6 +150,27 @@ uint16_t ISP2::get_next_word(int file) {
 	else {
 		return *(uint16_t*)buf;
 	}
+#endif
+
+	// Read from 'file' until bytes match known word type
+	do {
+		buf[0] = buf[1];
+		result = read(file,&buf[1],1);
+		if (result == -1) {
+			// Error in read
+			perror("ISP2 read error");
+			return 0;
+		}
+		else if (result == 0) {
+			// Didn't read anything
+			perror("ISP2 read nothing");
+			return 0;
+		}
+	}
+	while (ISP2::get_word_type(*(uint16_t*)buf) == ISP2_UNK_WORD);
+	
+	//Header found
+	return *(uint16_t*)buf;
 }
 
 word_type ISP2::get_word_type(uint16_t word) {
