@@ -1,3 +1,4 @@
+<!-- vim: syntax=Markdown -->
 # libISP2
 A library designed to provide easy communication with a device sending data via the Innovate Serial Protocol version 2. This library is currently read-only.
 
@@ -5,6 +6,8 @@ libISP2 provides the function ISP2::isp2_read. The first argument is a file desc
 
 Until I write more better documentation, please have a look at isp2.h for information about the isp2_t struct.
 
+## Installation
+===============
 INSTALL contains modified generic GNU install instructions.
 You must do `./autogen.sh` first
 This is made to be a shared library, so under Linux you need to do `sudo ldconfig` after 'sudo make install`
