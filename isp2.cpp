@@ -176,13 +176,23 @@ uint16_t ISP2::get_next_word(int file) {
 word_type ISP2::get_word_type(uint16_t word) {
 	uint16_t temp = word;
 	temp &= ISP2_LC2_HEADER_BITS;
-	if (!(temp^ISP2_LC2_HEADER_SIGNATURE)) {return ISP2_LC2_HEADER_WORD;}
+	if (!(temp^ISP2_LC2_HEADER_SIGNATURE)) {
+		perror("ISP2: LC-2 header word");
+		return ISP2_LC2_HEADER_WORD;
+	}
 	temp = word;
 	temp &= ISP2_DATA_BITS;
-	if (!(temp^ISP2_DATA_SIGNATURE)) {return ISP2_DATA_WORD;}
+	if (!(temp^ISP2_DATA_SIGNATURE)) {
+		perror("ISP2: Data word");
+		return ISP2_DATA_WORD;
+	}
 	temp = word;
 	temp &= ISP2_HEADER_BITS;
-	if (!(temp^ISP2_HEADER_SIGNATURE)) {return ISP2_HEADER_WORD;}
+	if (!(temp^ISP2_HEADER_SIGNATURE)) {
+		perror("ISP2: Header word");
+		return ISP2_HEADER_WORD;
+	}
+	perror("ISP2: Invalid Data Word");
 	return ISP2_UNK_WORD;
 }
 
