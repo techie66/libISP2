@@ -209,7 +209,7 @@ uint16_t ISP2::get_lambda(uint16_t word) {
 	uint8_t* word_ptr = (uint8_t*)&word;
 	uint8_t low_byte_high_bit = word_ptr[0] << 7; // save low bit as high bit
 	word_ptr[1] |= low_byte_high_bit; // put high bit back in the right byte
-	word_ptr[0] >> 1; // shift high byte over
+	word_ptr[0] >>= 1; // shift high byte over
 	word_ptr[0] &= 0x1F; // mask high byte just in case extra bits got in there
 	
 	#ifndef WORDS_BIGENDIAN
