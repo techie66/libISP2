@@ -97,7 +97,10 @@ of `autoconf'.
 
   9. libISP2 comes with an example program that can be used for testing 
      data streams or as example code for your own project.
-	 To build it type `make examples'
+	 To build it type `make examples'. This will build both a static and 
+	 dynamic linked version of the test program. It will probably fail
+	 if you don't do `make install' first. To make just the static
+	 example, `cd example' then `make isp2_example'.
 
 Compilers and Options
 =====================

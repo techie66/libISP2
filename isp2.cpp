@@ -45,6 +45,9 @@ int ISP2::isp2_read(int file,isp2_t& isp_data )
 				if (ISP2::get_word_type(current_word) == ISP2_DATA_WORD) {
 					// TODO get lambda
 					isp_data.lambda = ISP2::get_lambda(current_word);
+					if (isp_data.status == ISP2_NORMAL) {
+						isp_data.lambda += 500; // Protocol states "offset by 0.5 Lambda"
+					}
 				}
 				break;
 			
@@ -131,7 +134,10 @@ uint16_t ISP2::get_next_word(int file) {
 	uint8_t	buf[2] = {0};
 	int result;
 #define NEW
-#ifdef OLD
+#ifdef OLD 
+/*
+Probably time to get rid of this section
+*/
 	result = read(file,buf,2);
 	if (result == -1) {
 		// Error in read
@@ -164,7 +170,7 @@ uint16_t ISP2::get_next_word(int file) {
 		}
 		else if (result == 0) {
 			// Didn't read anything
-			perror("ISP2 read nothing");
+			//perror("ISP2 read nothing");
 			return 0;
 		}
 		byte_count++;
@@ -227,6 +233,6 @@ uint16_t ISP2::get_lambda(uint16_t word) {
 	word_ptr[1] = word_ptr[1] ^ word_ptr[0];
 	word_ptr[0] = word_ptr[0] ^ word_ptr[1];
 	#endif /* WORDS_BIGENDIAN */
-
+	
 	return word;	
 }

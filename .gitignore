@@ -30,3 +30,4 @@ example/.dirstamp
 example/.libs
 example/*.o
 example/isp2_example
+example/isp2_example_dyn

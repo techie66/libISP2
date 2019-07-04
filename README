@@ -11,6 +11,8 @@ INSTALL contains modified generic GNU install instructions.
 You must do `./autogen.sh` first
 This is made to be a shared library, so under Linux you need to do `sudo ldconfig` after 'sudo make install`
 
+To make examples do `make examples`. You will get two files "isp2_example_dyn" and "isp2_example" the dyn version links to the installed library, the other does not. In order for make examples to not fail, you probably have to run `make install' first.
+
 ## Credits
 Innovate Motorsports provides documentation detailing the protocol:
 [https://www.innovatemotorsports.com/support/downloads/Seriallog-2.pdf
