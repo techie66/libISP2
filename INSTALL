@@ -12,7 +12,7 @@ without warranty of any kind.
 Basic Installation
 ==================
 
-   Briefly, the shell command `./autogen.sh && ./configure && make && make install'
+   Briefly, the shell command `./configure && make && make install'
 should configure, build, and install this package.  The following
 more-detailed instructions are generic; see the `README' file for
 instructions specific to this package.  Some packages provide this
@@ -51,9 +51,7 @@ of `autoconf'.
    The simplest way to compile this package is:
 
   1. `cd' to the directory containing the package's source code and type
-     `./autogen.sh' to generate autotools skeleton.
-
-  1a. Type `./configure' to configure the package for your system.
+     `./configure' to configure the package for your system.
 
      Running `configure' might take a while.  While running, it prints
      some messages telling which features it is checking for.
@@ -94,13 +92,6 @@ of `autoconf'.
      distcheck', which can by used by developers to test that all other
      targets like `make install' and `make uninstall' work correctly.
      This target is generally not run by end users.
-
-  9. libISP2 comes with an example program that can be used for testing 
-     data streams or as example code for your own project.
-	 To build it type `make examples'. This will build both a static and 
-	 dynamic linked version of the test program. It will probably fail
-	 if you don't do `make install' first. To make just the static
-	 example, `cd example' then `make isp2_example'.
 
 Compilers and Options
 =====================
